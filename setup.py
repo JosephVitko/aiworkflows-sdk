@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='aiworkflows',
     version='0.0.1',
+    url='https://github.com/ai-workflows/sdk',
     description='AI Workflows Python SDK',
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
