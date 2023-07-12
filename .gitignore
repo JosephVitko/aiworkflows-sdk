@@ -92,3 +92,6 @@ venv/
 
 # Rope project settings
 .ropeproject
+
+build
+/build/
