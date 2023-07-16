@@ -95,3 +95,4 @@ venv/
 
 build
 /build/
+/tasks/

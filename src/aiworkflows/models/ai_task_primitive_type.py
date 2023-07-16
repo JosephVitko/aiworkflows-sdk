@@ -14,6 +14,7 @@ _type_map: dict[AiTaskPrimitiveType, type] = {
     AiTaskPrimitiveType.String: str,
     AiTaskPrimitiveType.Integer: int,
     AiTaskPrimitiveType.Float: float,
+    AiTaskPrimitiveType.Boolean: bool,
     AiTaskPrimitiveType.Dictionary: dict,
     AiTaskPrimitiveType.List: list
 }

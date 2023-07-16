@@ -1,5 +1,7 @@
 import os
 
+from dotenv import find_dotenv, load_dotenv
+
 from aiworkflows.api import tasks
 from aiworkflows.models.ai_task import AiTask
 from aiworkflows.models.ai_task_execution import AiTaskExecution
@@ -7,15 +9,18 @@ from aiworkflows.models.ai_task_execution import AiTaskExecution
 
 class AiWorkflowsApi:
     def __init__(self, api_key: str = None, authority: str = None):
+        # load .env variables
+        load_dotenv(find_dotenv())
+
         if api_key is None:
-            api_key = os.environ.get('AIWORKFLOWS_API_KEY', None)
+            api_key = os.getenv('AIWORKFLOWS_API_KEY', None)
 
             if api_key is None:
                 raise ValueError('Error initializing AiWorkflowsApi: api_key must be provided either as a parameter '
                                  'or as an environment variable (AIWORKFLOWS_API_KEY)')
 
         if authority is None:
-            authority = os.environ.get('AIWORKFLOWS_API_AUTHORITY', None)
+            authority = os.getenv('AIWORKFLOWS_API_AUTHORITY', None)
 
             if authority is None:
                 raise ValueError('Error initializing authority: api_url must be provided either as a parameter '

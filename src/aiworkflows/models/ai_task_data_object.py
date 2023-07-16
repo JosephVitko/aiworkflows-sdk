@@ -13,7 +13,7 @@ class AiTaskDataObject:
         self.message: str = message
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> "AiTaskDataObject":
         obj_type = parse_required_field(json, 'type', AiTaskPrimitiveType)
         value = parse_optional_field(json, 'value', get_mapped_type(obj_type))
         message = parse_optional_field(json, 'message', str)
@@ -22,7 +22,7 @@ class AiTaskDataObject:
                                 value=value,
                                 message=message)
 
-    def to_json(self):
+    def to_json(self) -> dict:
         return {
             'type': self.obj_type.value,
             'value': self.value,

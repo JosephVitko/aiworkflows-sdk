@@ -12,7 +12,7 @@ class AiTaskCallUsage:
         self.completion_tokens: int = completion_tokens
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> 'AiTaskCallUsage':
         total_tokens = parse_required_field(json, 'total_tokens', int)
         prompt_tokens = parse_optional_field(json, 'prompt_tokens', int)
         completion_tokens = parse_optional_field(json, 'completion_tokens', int)
@@ -21,7 +21,7 @@ class AiTaskCallUsage:
                                prompt_tokens=prompt_tokens,
                                completion_tokens=completion_tokens)
 
-    def to_json(self):
+    def to_json(self) -> dict:
         return {
             'total_tokens': self.total_tokens,
             'prompt_tokens': self.prompt_tokens,

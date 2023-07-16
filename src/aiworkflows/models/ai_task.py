@@ -1,5 +1,6 @@
 from aiworkflows.compiler.utils.json_utils import parse_required_field, parse_optional_field
 from aiworkflows.models.ai_task_configuration import AiTaskConfiguration
+from aiworkflows.models.ai_task_execution import AiTaskExecution
 from aiworkflows.models.ai_task_input import AiTaskInput
 from aiworkflows.models.ai_task_output import AiTaskOutput
 from aiworkflows.models.ai_task_primitive_type import get_mapped_type
@@ -37,7 +38,7 @@ class AiTask:
         return self._api
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> "AiTask":
         task_ref = parse_required_field(json, 'taskRef', str)
         configuration = parse_required_field(json, 'configuration', AiTaskConfiguration)
         prompt = parse_required_field(json, 'prompt', str)
@@ -74,7 +75,7 @@ class AiTask:
             'tenantId': self.tenant_id,
         }
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> AiTaskExecution:
         if self.api is None:
             raise RuntimeError('Error running task: API not bound')
 
@@ -114,7 +115,7 @@ class AiTask:
 
         return self.api.run_task(task_ref=self.task_ref, inputs=inputs)
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs) -> AiTaskExecution:
         return self.__call__(*args, **kwargs)
 
     def __repr__(self):

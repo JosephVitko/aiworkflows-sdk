@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='aiworkflows',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/ai-workflows/sdk',
     description='AI Workflows Python SDK',
     packages=find_packages(where='src'),
@@ -14,9 +14,15 @@ setup(
     license='MIT',
     install_requires=[
         'requests',
+        'python-dotenv',
     ],
     python_requires='>=3.10',
     classifiers=[
         'Development Status :: 1 - Planning',
-    ]
+    ],
+    entry_points={
+        "console_scripts": [
+            "aiworkflows=aiworkflows.cli:main",
+        ],
+    },
 )

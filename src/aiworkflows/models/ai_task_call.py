@@ -27,7 +27,7 @@ class AiTaskCall:
         self.usage: AiTaskCallUsage = usage
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> 'AiTaskCall':
         inputs = parse_optional_field(json, 'inputs', dict)
         output = parse_optional_field(json, 'output', AiTaskDataObject)
         model_id = parse_optional_field(json, 'model', str)

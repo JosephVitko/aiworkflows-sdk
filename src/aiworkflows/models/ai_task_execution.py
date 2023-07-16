@@ -16,7 +16,7 @@ class AiTaskExecution:
         self.completion_timestamp: int = completion_timestamp
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> 'AiTaskExecution':
         callstack = parse_required_field(json, 'callStack', list)
         callstack = [AiTaskCall.from_json(c) for c in callstack]
 
@@ -29,8 +29,7 @@ class AiTaskExecution:
                                success=success,
                                completion_timestamp=completion_timestamp)
 
-    def to_json(self):
-
+    def to_json(self) -> dict:
         callstack = [c.to_json() for c in self.callstack]
 
         return {

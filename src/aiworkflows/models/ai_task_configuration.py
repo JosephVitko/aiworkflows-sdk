@@ -20,7 +20,7 @@ class AiTaskConfiguration:
         self.additional_data: dict = additional_data
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> 'AiTaskConfiguration':
         try:
             model_id: str = parse_required_field(json, 'modelId', str)
             model_source: AiModelSource = parse_required_field(json, 'modelSource', AiModelSource)
@@ -31,7 +31,7 @@ class AiTaskConfiguration:
         except ValueError as e:
             raise ValueError(f'Cannot parse AiTaskConfiguration: {e}')
 
-    def to_json(self):
+    def to_json(self) -> dict:
         return {
             'modelId': self.model_id,
             'modelSource': self.model_source.value,

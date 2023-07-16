@@ -17,7 +17,7 @@ class AiTaskInput:
         self.is_required: bool = is_required
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> "AiTaskInput":
         input_type = parse_required_field(json, 'type', AiTaskPrimitiveType)
         input_ref = parse_required_field(json, 'inputRef', str)
         input_name = parse_optional_field(json, 'name', str)
@@ -30,7 +30,7 @@ class AiTaskInput:
                            input_description=input_description,
                            is_required=is_required)
 
-    def to_json(self):
+    def to_json(self) -> dict:
         return {
             'type': self.input_type.value,
             'inputRef': self.input_ref,
