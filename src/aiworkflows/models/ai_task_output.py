@@ -3,12 +3,23 @@ from aiworkflows.compiler.utils.json_utils import parse_required_field, parse_op
 
 
 class AiTaskOutput:
+    """
+    Defines the output of an AI task.
+    """
     def __init__(self,
                  output_type: AiTaskPrimitiveType,
                  name: str = None,
                  description: str = None,
                  parser_ref: str = None,
                  ):
+        """
+        Initializes a new instance of the AiTaskOutput class.
+
+        :param output_type: The type of the output.
+        :param name: The human-readable name of the output.
+        :param description: The human-readable description of the output.
+        :param parser_ref: The reference to the parser to use for the output.
+        """
         self.output_type: AiTaskPrimitiveType = output_type
         self.name: str = name
         self.description: str = description
@@ -16,6 +27,11 @@ class AiTaskOutput:
 
     @staticmethod
     def from_json(json: dict):
+        """
+        Creates a new instance of the AiTaskOutput class from a JSON object.
+
+        :param json: The JSON object.
+        """
         output_type = parse_required_field(json, 'type', AiTaskPrimitiveType)
         name = parse_optional_field(json, 'name', str)
         description = parse_optional_field(json, 'description', str)
@@ -27,6 +43,9 @@ class AiTaskOutput:
                             parser_ref=parser_ref)
 
     def to_json(self):
+        """
+        Creates a JSON object from the AiTaskOutput object.
+        """
         return {
             'type': self.output_type.value,
             'name': self.name,

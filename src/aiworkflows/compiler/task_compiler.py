@@ -1,11 +1,11 @@
 import json
 import os
 
-from aiworkflows.api.aiworkflows_api import AiWorkflowsApi
+from aiworkflows.api.api import AiWorkflowsApi
 from aiworkflows.models.ai_task import AiTask
 
 
-class Compiler:
+class TaskCompiler:
     def __init__(self, api: AiWorkflowsApi):
         self.api: AiWorkflowsApi = api
 

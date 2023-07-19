@@ -1,11 +1,16 @@
 from aiworkflows.compiler.utils.json_utils import parse_required_field, parse_optional_field
 from aiworkflows.models.ai_task_configuration import AiTaskConfiguration
+from aiworkflows.models.ai_task_execution import AiTaskExecution
 from aiworkflows.models.ai_task_input import AiTaskInput
 from aiworkflows.models.ai_task_output import AiTaskOutput
 from aiworkflows.models.ai_task_primitive_type import get_mapped_type
 
 
 class AiTask:
+    """
+    Represents a task in the AI Workflows system.
+    """
+
     def __init__(self,
                  task_ref: str,
                  configuration: AiTaskConfiguration,
@@ -17,6 +22,19 @@ class AiTask:
                  task_id: str = None,
                  tenant_id: str = None,
                  ):
+        """
+        Initializes a new instance of the AiTask class.
+
+        :param task_ref: The reference to the task.
+        :param configuration: The configuration of the task.
+        :param prompt: The prompt for the task.
+        :param output: The output of the task.
+        :param inputs: The inputs of the task.
+        :param name: The name of the task.
+        :param description: The description of the task.
+        :param task_id: The ID of the task.
+        :param tenant_id: The ID of the tenant.
+        """
         self.task_ref: str = task_ref
         self.configuration: AiTaskConfiguration = configuration
         self.prompt: str = prompt
@@ -30,14 +48,25 @@ class AiTask:
         self._api: "AiWorkflowsApi" = None
 
     def bind_api(self, api: "AiWorkflowsApi"):
+        """
+        Binds the API to the task so that it can be used to execute the task.
+        """
         self._api = api
 
     @property
     def api(self) -> "AiWorkflowsApi":
+        """
+        The API that is bound to the task.
+        """
         return self._api
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json(json: dict) -> "AiTask":
+        """
+        Creates an AiTask from a JSON object.
+
+        :param json: The JSON object.
+        """
         task_ref = parse_required_field(json, 'taskRef', str)
         configuration = parse_required_field(json, 'configuration', AiTaskConfiguration)
         prompt = parse_required_field(json, 'prompt', str)
@@ -61,7 +90,10 @@ class AiTask:
                       task_id=task_id,
                       tenant_id=tenant_id)
 
-    def to_json(self):
+    def to_json(self) -> dict:
+        """
+        Converts the AiTask to a JSON object.
+        """
         return {
             'taskRef': self.task_ref,
             'configuration': self.configuration.to_json(),
@@ -74,7 +106,10 @@ class AiTask:
             'tenantId': self.tenant_id,
         }
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> AiTaskExecution:
+        """
+        Executes the task.
+        """
         if self.api is None:
             raise RuntimeError('Error running task: API not bound')
 
@@ -114,7 +149,10 @@ class AiTask:
 
         return self.api.run_task(task_ref=self.task_ref, inputs=inputs)
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs) -> AiTaskExecution:
+        """
+        Executes the task.
+        """
         return self.__call__(*args, **kwargs)
 
     def __repr__(self):
