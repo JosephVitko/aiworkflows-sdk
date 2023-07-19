@@ -4,20 +4,16 @@ from aiworkflows.models.ai_task_execution import AiTaskExecution
 
 _task_route = '/task'
 
-task_cache: dict[str, AiTask] = {}
-
 
 def create_task(api: "AiWorkflowsApi",
                 task: AiTask,
-                auto_bind_api: bool = True,
-                cache: bool = True
+                auto_bind_api: bool = True
                 ) -> AiTask:
     """
     Creates a new task on the server.
     :param api:
     :param task:
     :param auto_bind_api: Whether to automatically bind the api to the task.
-    :param cache: Whether to cache the task locally.
     :return:
     """
     if task.task_id:
@@ -33,8 +29,6 @@ def create_task(api: "AiWorkflowsApi",
         task: AiTask = AiTask.from_json(response)
         if auto_bind_api:
             task.bind_api(api)
-        if cache:
-            task_cache[task.task_ref] = task
         return task
     except Exception as e:
         raise RuntimeError(f'Error creating task: parsing json failed for response: {e}')
@@ -42,15 +36,13 @@ def create_task(api: "AiWorkflowsApi",
 
 def update_task(api: "AiWorkflowsApi",
                 task: AiTask,
-                auto_bind_api: bool = True,
-                cache: bool = True
+                auto_bind_api: bool = True
                 ) -> AiTask:
     """
     Updates an existing task on the server.
     :param api:
     :param task:
     :param auto_bind_api: Whether to automatically bind the api to the task.
-    :param cache: Whether to cache the task locally.
     :return:
     """
     if not task.task_id:
@@ -69,8 +61,6 @@ def update_task(api: "AiWorkflowsApi",
         task: AiTask = AiTask.from_json(response)
         if auto_bind_api:
             task.bind_api(api)
-        if cache:
-            task_cache[task.task_ref] = task
         return task
     except Exception as e:
         raise RuntimeError(f'Error updating task: parsing json failed for response: {e}')
@@ -78,23 +68,15 @@ def update_task(api: "AiWorkflowsApi",
 
 def get_task(api: "AiWorkflowsApi",
              task_ref: str,
-             auto_bind_api: bool = True,
-             allow_cache: bool = True
+             auto_bind_api: bool = True
              ) -> AiTask:
     """
     Gets an existing task from the server.
     :param api:
     :param task_ref:
     :param auto_bind_api: Whether to automatically bind the api to the task.
-    :param allow_cache: Whether to allow the task to be retrieved from the local cache.
     :return:
     """
-    if allow_cache and task_ref in task_cache:
-        task = task_cache[task_ref]
-        if auto_bind_api:
-            task.bind_api(api)
-        return task
-
     url = api.authority + _task_route
 
     body = {
@@ -112,14 +94,12 @@ def get_task(api: "AiWorkflowsApi",
 
 
 def delete_task(api: "AiWorkflowsApi",
-                task_ref: str,
-                remove_from_cache: bool = True
+                task_ref: str
                 ) -> None:
     """
     Deletes an existing task from the server.
     :param api:
     :param task_ref:
-    :param remove_from_cache: Whether to remove the task from the local cache.
     :return:
     """
     url = api.authority + _task_route
@@ -129,17 +109,12 @@ def delete_task(api: "AiWorkflowsApi",
     }
     send_request(url, api.api_key, body, method='POST', req_description='deleting task')
 
-    if remove_from_cache and task_ref in task_cache:
-        del task_cache[task_ref]
 
-
-def list_tasks(api: "AiWorkflowsApi",
-               cache: bool = True
+def list_tasks(api: "AiWorkflowsApi"
                ) -> list[AiTask]:
     """
     Lists tasks from the server for the current tenant.
     :param api
-    :param cache: Whether to cache the tasks locally.
     :return:
     """
     url = api.authority + _task_route + '/list'
@@ -151,11 +126,6 @@ def list_tasks(api: "AiWorkflowsApi",
         tasks: list[AiTask] = [AiTask.from_json(task_json) for task_json in response]
         for task in tasks:
             task.bind_api(api)
-
-        if cache:
-            for task in tasks:
-                task_cache[task.task_ref] = task
-
         return tasks
     except Exception as e:
         raise RuntimeError(f'Error listing tasks: parsing json failed for response: {e}')

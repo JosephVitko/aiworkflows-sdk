@@ -1,7 +1,7 @@
 import json
 import os
 
-from aiworkflows.api.aiworkflows_api import AiWorkflowsApi
+from aiworkflows.api.api import AiWorkflowsApi
 from aiworkflows.models.ai_task import AiTask
 
 
