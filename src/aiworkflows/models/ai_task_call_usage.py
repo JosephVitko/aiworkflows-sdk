@@ -10,6 +10,7 @@ class AiTaskCallUsage:
                  total_tokens: int,
                  prompt_tokens: int = None,
                  completion_tokens: int = None,
+                 usage_id: str = None,
                  ):
         """
         Initializes a new instance of the AiTaskCallUsage class.
@@ -17,10 +18,12 @@ class AiTaskCallUsage:
         :param total_tokens: The total number of tokens used.
         :param prompt_tokens: The number of tokens used for the prompt.
         :param completion_tokens: The number of tokens used for the completion.
+        :param usage_id: The id of the usage.
         """
         self.total_tokens: int = total_tokens
         self.prompt_tokens: int = prompt_tokens
         self.completion_tokens: int = completion_tokens
+        self.id: str = usage_id
 
     @staticmethod
     def from_json(json: dict) -> 'AiTaskCallUsage':
@@ -32,10 +35,12 @@ class AiTaskCallUsage:
         total_tokens = parse_required_field(json, 'total_tokens', int)
         prompt_tokens = parse_optional_field(json, 'prompt_tokens', int)
         completion_tokens = parse_optional_field(json, 'completion_tokens', int)
+        usage_id = parse_optional_field(json, 'id', str)
 
         return AiTaskCallUsage(total_tokens=total_tokens,
                                prompt_tokens=prompt_tokens,
-                               completion_tokens=completion_tokens)
+                               completion_tokens=completion_tokens,
+                               usage_id=usage_id)
 
     def to_json(self) -> dict:
         """
@@ -45,6 +50,7 @@ class AiTaskCallUsage:
             'total_tokens': self.total_tokens,
             'prompt_tokens': self.prompt_tokens,
             'completion_tokens': self.completion_tokens,
+            'id': self.id,
         }
 
     def __repr__(self):
