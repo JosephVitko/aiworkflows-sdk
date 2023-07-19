@@ -3,6 +3,8 @@
 import argparse
 import os
 import logging
+from datetime import datetime
+
 import dotenv
 from aiworkflows import AiWorkflowsApi, TaskCompiler
 
@@ -32,6 +34,7 @@ def configure(args):
 
 
 def deploy(args):
+    logging.info(f"Deploying tasks from {args.path} at {str(datetime.now())}")
     try:
         api_key = dotenv.get_key('.env', 'AIWORKFLOWS_API_KEY')
         api = AiWorkflowsApi(api_key=api_key)
