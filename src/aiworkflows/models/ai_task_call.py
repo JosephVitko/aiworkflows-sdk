@@ -5,6 +5,10 @@ from aiworkflows.models.ai_task_data_object import AiTaskDataObject
 
 
 class AiTaskCall:
+    """
+    Represents a call to an AI task.
+    """
+
     def __init__(self,
                  inputs: dict = None,
                  output: AiTaskDataObject = None,
@@ -16,6 +20,19 @@ class AiTaskCall:
                  task_id: str = None,
                  usage: AiTaskCallUsage = None,
                  ):
+        """
+        Initializes a new instance of the AiTaskCall class.
+
+        :param inputs: The inputs of the task call.
+        :param output: The output of the task call.
+        :param model_id: The ID of the model.
+        :param response_model_id: The ID of the response model.
+        :param model_source: The source of the model.
+        :param success: Whether the task call was successful.
+        :param timestamp: The timestamp of the task call.
+        :param task_id: The ID of the task.
+        :param usage: The usage of the task call.
+        """
         self.inputs: dict = inputs
         self.output: AiTaskDataObject = output
         self.model_id: str = model_id
@@ -28,6 +45,11 @@ class AiTaskCall:
 
     @staticmethod
     def from_json(json: dict) -> 'AiTaskCall':
+        """
+        Creates a new instance of the AiTaskCall class from a JSON object.
+
+        :param json: The JSON object.
+        """
         inputs = parse_optional_field(json, 'inputs', dict)
         output = parse_optional_field(json, 'output', AiTaskDataObject)
         model_id = parse_optional_field(json, 'model', str)
@@ -48,7 +70,10 @@ class AiTaskCall:
                           task_id=task_id,
                           usage=usage)
 
-    def to_json(self):
+    def to_json(self) -> dict:
+        """
+        Creates a JSON object from the AiTaskCall object.
+        """
         return {
             'inputs': self.inputs,
             'output': self.output,

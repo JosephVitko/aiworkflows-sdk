@@ -4,12 +4,23 @@ from aiworkflows.compiler.utils.json_utils import parse_required_field, parse_op
 
 
 class AiTaskExecution:
+    """
+    Represents the execution of an AI task.
+    """
     def __init__(self,
                  callstack: list[AiTaskCall],
                  result: AiTaskDataObject = None,
                  success: bool = None,
                  completion_timestamp: int = None,
                  ):
+        """
+        Initializes a new instance of the AiTaskExecution class.
+
+        :param callstack: The callstack of the task execution.
+        :param result: The result of the task execution.
+        :param success: Whether the task execution was successful.
+        :param completion_timestamp: The timestamp of the task execution.
+        """
         self.callstack: list[AiTaskCall] = callstack
         self.result: AiTaskDataObject = result
         self.success: bool = success
@@ -17,6 +28,11 @@ class AiTaskExecution:
 
     @staticmethod
     def from_json(json: dict) -> 'AiTaskExecution':
+        """
+        Creates a new instance of the AiTaskExecution class from a JSON object.
+
+        :param json: The JSON object.
+        """
         callstack = parse_required_field(json, 'callStack', list)
         callstack = [AiTaskCall.from_json(c) for c in callstack]
 
@@ -30,6 +46,9 @@ class AiTaskExecution:
                                completion_timestamp=completion_timestamp)
 
     def to_json(self) -> dict:
+        """
+        Creates a JSON object from the AiTaskExecution object.
+        """
         callstack = [c.to_json() for c in self.callstack]
 
         return {
