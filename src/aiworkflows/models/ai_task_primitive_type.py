@@ -11,6 +11,7 @@ class AiTaskPrimitiveType(Enum):
     Boolean = "Boolean"
     Dictionary = "Dictionary"
     List = "List"
+    Image = "Image"
 
 
 # map from AiTaskPrimitiveType to Python type
@@ -20,7 +21,8 @@ _type_map: dict[AiTaskPrimitiveType, type] = {
     AiTaskPrimitiveType.Float: float,
     AiTaskPrimitiveType.Boolean: bool,
     AiTaskPrimitiveType.Dictionary: dict,
-    AiTaskPrimitiveType.List: list
+    AiTaskPrimitiveType.List: list,
+    AiTaskPrimitiveType.Image: str,  # image is a string with the url to the image
 }
 
 
